@@ -1,0 +1,31 @@
+{
+    "_dataGeom": "Geometrical Data",
+    "length": 1, "width": 1, "height": 1,
+    
+    "_dataPhys": "Physical Data",
+    "rho": 8960, "lambda": 400, "cp": 380,
+    "T0": 30, "qV": 300000,
+    "materials": [
+        {"rho": 8960, "lambda":400, "cp":380},
+        {"rho": 6000, "lambda":300, "cp": 240}
+    ],
+    "sections": [
+        {"material": 0, "x0": 0, "x1": 0.5},
+        {"material": 1, "x0": 0.5, "x1": 1}
+    ],
+
+    "_dataNum": "Numerical Data",
+    "scheme": "crank-nicolson", "solver": "CG",
+    "N": 100, "maxIterations": 2000, "tolNumeric": 1e-8,
+    "endTime": 5000, "timeStep": 0.5, "tolTemporal": 1e-3,
+    
+    "_dataMesh": "Mesh Data",
+    "meshAlgorithm": 3, "strength": 0, "centering": 0.5, "kappa": 1, "delta": 0.001,
+
+    "_dataBnd": "Boundary Conditions",
+    "boundaries": [
+        {"type": "Dirichlet", "position": "0", "value": "100", "side": "1"},
+        {"type": "Dirichlet", "position": "1", "value": "20", "side": "-1"}
+    ]
+
+}
