@@ -30,13 +30,11 @@ void Mesh::addBoundaryConditions(Json::Value boundaries){
 
         } else if (boundaries[i]["type"] == "Neumann") {
             
-            // PENDIENTE
-            boundaryConditions.push_back({1, boundaries[i]["position"].asDouble(), boundaries[i]["value"].asDouble(), std::stod(boundaries[i]["side"].asString(), 0)});
+            boundaryConditions.push_back({1, std::stod(boundaries[i]["position"].asString(), 0), std::stod(boundaries[i]["value"].asString(), 0), std::stod(boundaries[i]["side"].asString(), 0)});
 
         } else if (boundaries[i]["type"] == "Convection") {
             
-            // PENDIENTE
-            boundaryConditions.push_back({2, boundaries[i]["position"].asDouble(), boundaries[i]["value"].asDouble(), std::stod(boundaries[i]["side"].asString(), 0)});
+            boundaryConditions.push_back({2, std::stod(boundaries[i]["position"].asString(), 0), std::stod(boundaries[i]["value"].asString(), 0), std::stod(boundaries[i]["side"].asString(), 0), std::stod(boundaries[i]["alpha"].asString(), 0)});
 
         } else {
             std::cerr << "Error: Invalid boundary condition type " << boundaries[i]["type"].asString() << std::endl;

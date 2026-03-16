@@ -11,18 +11,23 @@ def createJsonFiles():
     # Base Dictionary
     data = {
         "length": 1, "width": 1, "height": 1,
-        "T0": 30, "rho": 8960, "lambda": 400, "cp": 380,
+        "rho": 8960, "lambda": 400, "cp": 380,
+        "T0": 30, "qV": 300000,
         "maxIterations": 2000, "tolNumeric": 1e-8,
         "endTime": 5000, "tolTemporal": 1e-3,
         "meshAlgorithm": 3, "strength": 0, "centering": 0.5, "kappa": 1, "delta": 0.001,
         "solver": "CG",
 
         "boundaries": [
-            {"type": "Dirichlet", "position": "0", "value": "100", "side": "1"},
-            {"type": "Dirichlet", "position": "1", "value": "20", "side": "-1"}
+            {"type": "Dirichlet", "position": "0", "value": "100"},
+            {"type": "Dirichlet", "position": "1", "value": "20"},
+            {"type": "Neumann", "position": "0", "value": "10000", "side": "-1"},
+            {"type": "Neumann", "position": "1", "value": "-15000", "side": "1"},
+            {"type": "Convection", "position": "0", "value": "80", "side": "-1", "alpha": "2000"},
+            {"type": "Convection", "position": "1", "value": "10", "side": "1", "alpha": "4000"}
         ],
 
-        "scheme": 'implicit', "N":50 , "timeStep": 0.1
+        "scheme": 'implicit', "N":50 , "timeStep": 0.5
     }
 
     # Control

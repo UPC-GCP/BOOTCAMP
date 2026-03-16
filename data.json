@@ -24,8 +24,8 @@
 
     "_dataBnd": "Boundary Conditions",
     "boundaries": [
-        {"type": "Dirichlet", "position": "0", "value": "100", "side": "1"},
-        {"type": "Dirichlet", "position": "1", "value": "20", "side": "-1"}
+        {"type": "Convection", "position": "0", "value": "80", "side": "-1", "alpha": "2000"},
+        {"type": "Neumann", "position": "1", "value": "-15000", "side": "1"}
     ]
 
 }

@@ -10,13 +10,13 @@ inline std::vector<double> operProdMatVec(std::vector<Matrix> Mat, std::vector<d
     int n = Vec.size(); std::vector<double> aVec(n); 
 
     // Calculate
-    for (size_t i = 1; i < n-1; i++){
+    for (size_t i = 0; i < n; i++){
 
         if (i > 0 && i < n - 1){
             aVec[i] = Mat[i].aw * Vec[i-1] + Mat[i].ap * Vec[i] + Mat[i].ae * Vec[i+1];
         } else if (i == 0){
             aVec[i] = Mat[i].ap * Vec[i] + Mat[i].ae * Vec[i+1];
-        } else if (i == n){
+        } else if (i == n - 1){
             aVec[i] = Mat[i].aw * Vec[i-1] + Mat[i].ap * Vec[i];
         }
 

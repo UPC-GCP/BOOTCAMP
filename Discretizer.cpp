@@ -73,35 +73,44 @@ void Discretizer::setBoundaryConditions(Material& Mat, Mesh& Msh){
         } else if (bC[0] == 1) {
             
             // Neumann Coefficients
-            if (std::signbit(bC[3])) {
-                Msh.matA[iPos].aw = - 1;
-                Msh.matA[iPos].ap = - Msh.matA[iPos].aw - Msh.matA[iPos].ae;
-                Msh.bp[iPos] = bC[2] * Msh.dx[iPos-1] / Mat.lambda;
-            } else if (!std::signbit(bC[3])){
-                Msh.matA[iPos].ae = - 1;
-                Msh.matA[iPos].ap = - Msh.matA[iPos].aw - Msh.matA[iPos].ae;
-                Msh.bp[iPos] = bC[2] * Msh.dx[iPos] / Mat.lambda;
+            if (!std::signbit(bC[3])) {
+                Msh.matA[iPos].aw = - beta * Mat.lambda / Msh.dx[iPos-1];
+                Msh.matA[iPos].ap = - Msh.matA[iPos].aw;
+                Msh.bp[iPos] = bC[2] + (1 - beta) * (Mat.lambda * Msh.TNodes[iPos-1] / Msh.dx[iPos-1] - Mat.lambda * Msh.TNodes[iPos] / Msh.dx[iPos-1]);
+            } else if (std::signbit(bC[3])){
+                Msh.matA[iPos].ae = - beta * Mat.lambda / Msh.dx[iPos];
+                Msh.matA[iPos].ap = - Msh.matA[iPos].ae;
+                Msh.bp[iPos] = bC[2] + (1 - beta) * (Mat.lambda * Msh.TNodes[iPos+1] / Msh.dx[iPos] - Mat.lambda * Msh.TNodes[iPos] / Msh.dx[iPos]);
             } else {
                 std::cerr << "Boundary side not specified correcly.\n";
-                // Cómo podría arreglar este formato para que funcione en 2D+, siento que la lógica detrás de esto no va a ser funcional para casos de más dimensiones.
             }
 
         } else if (bC[0] == 2) {
-            
+
             // Convection Coefficients
-            // PENDIENTE
+            if (!std::signbit(bC[3])) {
+                Msh.matA[iPos].aw = - beta * Mat.lambda / Msh.dx[iPos-1];
+                Msh.matA[iPos].ap = - Msh.matA[iPos].aw + bC[4];
+                Msh.bp[iPos] = bC[4] * bC[2] + (1 - beta) * (Mat.lambda * Msh.TNodes[iPos-1] / Msh.dx[iPos-1] - Mat.lambda * Msh.TNodes[iPos] / Msh.dx[iPos-1]);
+            } else if (std::signbit(bC[3])){
+                Msh.matA[iPos].ae = - beta * Mat.lambda / Msh.dx[iPos];
+                Msh.matA[iPos].ap = - Msh.matA[iPos].ae + bC[4];
+                Msh.bp[iPos] = bC[4] * bC[2] + (1 - beta) * (Mat.lambda * Msh.TNodes[iPos+1] / Msh.dx[iPos] - Mat.lambda * Msh.TNodes[iPos] / Msh.dx[iPos]);
+            } else {
+                std::cerr << "Boundary side not specified correcly.\n";
+            }
 
         }
+
     }
 
 }
 
+// HASTA ACÁ ESTOY SEGURO DE QUE FUNCIONA BIEN, ESTA ES LA VERSIÓN CORRECTA DEL CÓDIGO PARA setBoundaryConditions
+
 void Discretizer::setCoefficients(Material& Mat, Mesh& Msh){
     
-    for (int i = 0; i < Msh.totNodes; i++) {
-
-        // Filter
-        if (std::count(Msh.ignoreBC.begin(), Msh.ignoreBC.end(), i)){continue;}
+    for (int i = 1; i < Msh.totNodes-1; i++) {
 
         // Coefficients A (Directo a matriz)
         Msh.matA[i].aw = -beta * Mat.lambda * Msh.Sw[i] / Msh.dx[i-1];
@@ -117,10 +126,7 @@ void Discretizer::setCoefficients(Material& Mat, Mesh& Msh){
 
 void Discretizer::setRHS(Material& Mat, Mesh& Msh){
 
-    for (int i = 0; i < Msh.totNodes; i++) {
-
-        // Filter
-        if (std::count(Msh.ignoreBC.begin(), Msh.ignoreBC.end(), i)){continue;}
+    for (int i = 1; i < Msh.totNodes-1; i++) {
 
         // Coefficients B
         Msh.bp[i] = Mat.qV * Msh.Vp[i] + Mat.rho * Mat.cp * Msh.Vp[i] * Msh.TNodes[i] / dt + (1 - beta) * Mat.lambda * (Msh.Sw[i]*Msh.TNodes[i-1]/Msh.dx[i-1] + Msh.Se[i]*Msh.TNodes[i+1]/Msh.dx[i] - (Msh.Sw[i]/Msh.dx[i-1] + Msh.Se[i]/Msh.dx[i])*Msh.TNodes[i]);

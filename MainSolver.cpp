@@ -99,6 +99,7 @@ int main(int argc, char* argv[]){
     Dsc.setSchemeParameters(Mat, Msh); std::cout << "Temporal parameters set. \n";
     Dsc.setBoundaryConditions(Mat, Msh); std::cout << "Boundary conditions set. \n";
     Dsc.setCoefficients(Mat, Msh); std::cout << "Discretized coefficiets set. \n";
+
     
     ///// Solver /////
     std::cout << "Initializing solver ... \n";
@@ -127,6 +128,7 @@ int main(int argc, char* argv[]){
     for (double t = Dsc.dt; t <= Dsc.endTime; t += Dsc.dt){
 
         // Update Coefficients
+        Dsc.setBoundaryConditions(Mat, Msh);
         Dsc.setRHS(Mat, Msh);
 
         // Solver
