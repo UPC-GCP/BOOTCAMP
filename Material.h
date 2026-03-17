@@ -14,18 +14,16 @@ private:
 
 public:
     // Variables
-    double T0{}, rho{}, lambda{}, cp{}, alpha{}, qV{};
+    double T0{}, qV{};
 
     // Vectors
     std::vector<MatPhys> vMat{};
 
     // Constructor
-    Material(double rho, double lambda, double cp, double source);
-    // Material(Json::Value materials);
+    Material(Json::Value materials);
     
     // Functions
     void setInitialConditions(double initTemp);
-    void setProperties(double rho, double lambda, double cp);
 };
 
 #endif

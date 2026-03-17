@@ -9,13 +9,14 @@
 #include "Material.h"
 #include "Mesh.h"
 
-Mesh::Mesh(int N, double L, double W, double H, double A, double xC, double kStr, double delta) {
+Mesh::Mesh(int algo, double W, double H, double A, double xC, double kStr, double delta) {
 
     // Geometry
-    this->L = L; this->W = W; this->H = H;
+    this->W = W; this->H = H;
 
     // Mesh Parameters
-    this->N = N; strength = A; centering = xC; kStrength = kStr; this->delta = delta;
+    algorithm = algo;
+    strength = A; centering = xC; kStrength = kStr; this->delta = delta;
     
 }
 
@@ -44,45 +45,75 @@ void Mesh::addBoundaryConditions(Json::Value boundaries){
 
 }
 
-void Mesh::generateMesh(Material& Mat, int algo) {
-    
-    // Control
-    totNodes = N + 2; 
-    xFaces.resize(totNodes-1); xNodes.resize(totNodes);
+
+void Mesh::calculateFaces(int cNode, int NSec, double x0, double x1) {
+
+    // General
+    double length = x1 - x0;
 
     // Face Positions
-    if (algo == 0){
+    if (algorithm == 0){
         // Face Positions 0: Bidirectional Non-uniform (A, xC)
-        for (int i = 0; i < totNodes-1; i++) {
-            xFaces[i] = i * L / N + strength * (centering - i * L / N) * (1 - i/N) * i / N;
+        for (int i = cNode; i < cNode+NSec+1; i++) {
+            xFaces[i] = x0 + (i-cNode) * length / NSec + strength * (centering - (i-cNode) * length / NSec) * (1 - (i-cNode)/NSec) * (i-cNode) / NSec;
         }
-    } else if (algo == 1){
+    } else if (algorithm == 1){
         // Face Positions 1: Unidirectional Non-uniform (Kappa)
-        for (int i = 0; i < totNodes-1; i++) {
-            xFaces[i] = pow((i * L / N), kStrength);
+        for (int i = cNode; i < cNode+NSec+1; i++) {
+            xFaces[i] = x0 + pow(((i-cNode) * length / NSec), kStrength);
         }
-    } else if(algo == 2){
+    } else if(algorithm == 2){
         // Face Positions 2: Hyperbolic Tangent (Single Side)
         double A, B;
-        for (int i = 0; i < totNodes-1; i++){
-            A = tanh(delta * (static_cast<double>(i) / N - 1)); B = tanh(delta);
-            xFaces[i] = L * (1 + A / B);
+        for (int i = cNode; i < cNode+NSec+1; i++){
+            A = tanh(delta * ((static_cast<double>(i) - cNode) / NSec - 1)); B = tanh(delta);
+            xFaces[i] = x0 + length * (1 + A / B);
         }
-    } else if(algo == 3){
+    } else if(algorithm == 3){
         // Face Positions 3: Hyperbolic Tangent (Double-Sided)
         double A, B;
-        for (int i = 0; i < totNodes-1; i++){
-            A = tanh(delta*(static_cast<double>(i)/N - 0.5));
+        for (int i = cNode; i < cNode+NSec+1; i++){
+            A = tanh(delta*((static_cast<double>(i) - cNode)/NSec - 0.5));
             B = tanh(0.5 * delta);
-            xFaces[i] = 0.5 * L * (1 + A/B);
+            xFaces[i] = x0 + 0.5 * length * (1 + A/B);
         }
     }
+
+}
+
+void Mesh::generateMesh(Material& Mat, Json::Value sections) {
+    
+    // Control
+    totNodes = 2;
+    for (Json::Value::ArrayIndex i = 0; i < sections.size(); i++) {
+        totNodes += sections[i]["N"].asDouble();
+    }
+    xFaces.resize(totNodes-1); xNodes.resize(totNodes); xMat.resize(totNodes);
+
+    int cNode = 0;
+    for (Json::Value::ArrayIndex i = 0; i < sections.size(); i++) {
+
+        // Material Vector
+        for (int j = 0; j < sections[i]["N"].asInt(); j++){
+            xMat[1+j+cNode] = sections[i]["material"].asInt();
+        }
+
+        // Face Nodes
+        calculateFaces(cNode, sections[i]["N"].asInt(), sections[i]["x0"].asDouble(), sections[i]["x1"].asDouble());
+
+        // Control
+        cNode += sections[i]["N"].asInt();
+
+    }
+
+    // Boundaries
+    xMat[0] = xMat[1]; xMat[xMat.size()-1] = xMat[xMat.size()-2];
 
     // CV Positions
     for (int i = 1; i < totNodes-1; i++) {
         xNodes[i] = 0.5 * (xFaces[i] + xFaces[i-1]);
     }
-    xNodes.front() = 0; xNodes.back() = L;
+    xNodes.front() = xFaces.front(); xNodes.back() = xFaces.back();
 
     // Geometry
     Sw.resize(totNodes, W * H); Se.resize(totNodes, W * H); dx.resize(totNodes, 0); deltaX.resize(totNodes, 0); Vp.resize(totNodes, 0);

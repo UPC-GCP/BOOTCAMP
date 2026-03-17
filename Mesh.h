@@ -16,21 +16,22 @@ private:
 
 public:
     // Variables
-    int N{}, totNodes{};
-    double L{}, W{}, H{}, strength{}, centering{}, kStrength{}, delta{};
+    int totNodes{}, algorithm{}; // Incluir algorithm eventualmente para no tener que pasarlo en las funciones
+    double W{}, H{}, strength{}, centering{}, kStrength{}, delta{};
 
     // Vectors
-    std::vector<int> ignoreBC{};
+    std::vector<int> ignoreBC{}, xMat{};
     std::vector<std::vector<double>> boundaryConditions{};
     std::vector<double> xFaces{}, xNodes{}, TNodes{}, Sw{}, Se{}, dx{}, deltaX{}, Vp{}, bp{};
     std::vector<Matrix> matA{};
 
     // Constructor
-    Mesh(int N, double L, double W = 1, double H = 1, double A = 0, double xC = 0.5, double kStr = 1, double delta = 0.001);
+    Mesh(int algo, double W = 1, double H = 1, double A = 0, double xC = 0.5, double kStr = 1, double delta = 0.001);
 
     // Functions
     void addBoundaryConditions(Json::Value boundaries);
-    void generateMesh(Material& Mat, int algorithm);
+    void calculateFaces(int cNode, int NSec, double x0, double x1);
+    void generateMesh(Material& Mat, Json::Value sections);
 };
 
 #endif

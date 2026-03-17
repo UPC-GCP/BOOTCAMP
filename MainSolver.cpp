@@ -63,7 +63,7 @@ int main(int argc, char* argv[]){
     std::cout << "Initializing material ... \n";
 
     // Create Material
-    Material Mat(data["rho"].asDouble(), data["lambda"].asDouble(), data["cp"].asDouble(), data["qV"].asDouble());
+    Material Mat(data["materials"]);
     std::cout << "Thermophysical properties set. \n";
 
     // Initial Conditions
@@ -75,7 +75,7 @@ int main(int argc, char* argv[]){
     std::cout << "Initializing mesh ... \n";
 
     // Create Mesh
-    Mesh Msh(data["N"].asInt(), data["length"].asDouble(), data["width"].asDouble(), data["height"].asDouble(), data["strength"].asDouble(), data["centering"].asDouble(), data["kappa"].asDouble(), data["delta"].asDouble());
+    Mesh Msh(data["meshAlgorith"].asInt(), data["width"].asDouble(), data["height"].asDouble(), data["strength"].asDouble(), data["centering"].asDouble(), data["kappa"].asDouble(), data["delta"].asDouble());
     std::cout << "Geometry set. \n";
 
     // Add Boundary Conditions
@@ -85,7 +85,7 @@ int main(int argc, char* argv[]){
     std::cout << "Generating mesh ... \n";
 
     // Generate Mesh
-    Msh.generateMesh(Mat, data["meshAlgorithm"].asInt());
+    Msh.generateMesh(Mat, data["sections"]);
     std::cout << "Mesh created with " << Msh.totNodes << " nodes. \n";
 
 
