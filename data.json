@@ -1,23 +1,23 @@
 {
     "_dataGeom": "Geometrical Data",
-    "length": 1, "width": 1, "height": 1,
+    "width": 1, "height": 1,
     
     "_dataPhys": "Physical Data",
-    "T0": 30, "qV": 300000,
+    "T0": 30,
     "materials": [
         {"rho": 8960, "lambda":400, "cp":380},
         {"rho": 6000, "lambda":300, "cp": 240}
     ],
     "sections": [
-        {"material": 0, "N": 5, "x0": 0, "x1": 0.5},
-        {"material": 1, "N": 5, "x0": 0.5, "x1": 1},
-        {"material": 0, "N": 5, "x0":1, "x1":1.5}
+        {"material": 0, "N": 5, "x0": 0, "x1": 0.5, "qV": 0},
+        {"material": 1, "N": 5, "x0": 0.5, "x1": 1, "qV": 0},
+        {"material": 0, "N": 5, "x0":1, "x1":1.5, "qV": 15000}
     ],
 
     "_dataNum": "Numerical Data",
     "scheme": "crank-nicolson", "solver": "CG",
-    "N": 100, "maxIterations": 2000, "tolNumeric": 1e-8,
-    "endTime": 5000, "timeStep": 0.5, "tolTemporal": 1e-3,
+    "maxIterations": 2000, "endTime": 5000, "timeStep": 0.5,
+    "tolNumeric": 1e-8, "tolTemporal": 1e-3,
     
     "_dataMesh": "Mesh Data",
     "meshAlgorithm": 0, "strength": 0, "centering": 0.5, "kappa": 1, "delta": 2,

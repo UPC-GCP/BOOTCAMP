@@ -22,7 +22,7 @@ public:
     // Vectors
     std::vector<int> ignoreBC{}, xMat{};
     std::vector<std::vector<double>> boundaryConditions{};
-    std::vector<double> xFaces{}, xNodes{}, TNodes{}, Sw{}, Se{}, dx{}, deltaX{}, Vp{}, bp{};
+    std::vector<double> xFaces{}, xNodes{}, TNodes{}, Sw{}, Se{}, dx{}, deltaX{}, Vp{}, bp{}, qV{};
     std::vector<Matrix> matA{};
 
     // Constructor

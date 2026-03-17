@@ -89,6 +89,7 @@ void Discretizer::setBoundaryConditions(Material& Mat, Mesh& Msh){
             
             // Neumann Coefficients
             if (!std::signbit(bC[3])) {
+                
                 // Thermal Conductivity
                 lamb = Mat.vMat[Msh.xMat[iPos]].lambda;
 
@@ -96,7 +97,9 @@ void Discretizer::setBoundaryConditions(Material& Mat, Mesh& Msh){
                 Msh.matA[iPos].aw = - beta * lamb / Msh.dx[iPos-1];
                 Msh.matA[iPos].ap = - Msh.matA[iPos].aw;
                 Msh.bp[iPos] = bC[2] + (1 - beta) * (lamb * Msh.TNodes[iPos-1] / Msh.dx[iPos-1] - lamb * Msh.TNodes[iPos] / Msh.dx[iPos-1]);
+
             } else if (std::signbit(bC[3])){
+                
                 // Thermal Conductivity
                 lamb = Mat.vMat[Msh.xMat[iPos]].lambda;
 
@@ -104,6 +107,7 @@ void Discretizer::setBoundaryConditions(Material& Mat, Mesh& Msh){
                 Msh.matA[iPos].ae = - beta * lamb / Msh.dx[iPos];
                 Msh.matA[iPos].ap = - Msh.matA[iPos].ae;
                 Msh.bp[iPos] = bC[2] + (1 - beta) * (lamb * Msh.TNodes[iPos+1] / Msh.dx[iPos] - lamb * Msh.TNodes[iPos] / Msh.dx[iPos]);
+
             } else {
                 std::cerr << "Boundary side not specified correcly.\n";
             }
@@ -112,6 +116,7 @@ void Discretizer::setBoundaryConditions(Material& Mat, Mesh& Msh){
 
             // Convection Coefficients
             if (!std::signbit(bC[3])) {
+
                 // Thermal Conductivity
                 lamb = Mat.vMat[Msh.xMat[iPos]].lambda;
 
@@ -119,7 +124,9 @@ void Discretizer::setBoundaryConditions(Material& Mat, Mesh& Msh){
                 Msh.matA[iPos].aw = - beta * lamb / Msh.dx[iPos-1];
                 Msh.matA[iPos].ap = - Msh.matA[iPos].aw + bC[4];
                 Msh.bp[iPos] = bC[4] * bC[2] + (1 - beta) * (lamb * Msh.TNodes[iPos-1] / Msh.dx[iPos-1] - lamb * Msh.TNodes[iPos] / Msh.dx[iPos-1]);
+
             } else if (std::signbit(bC[3])){
+
                 // Thermal Conductivity
                 lamb = Mat.vMat[Msh.xMat[iPos]].lambda;
 
@@ -127,6 +134,7 @@ void Discretizer::setBoundaryConditions(Material& Mat, Mesh& Msh){
                 Msh.matA[iPos].ae = - beta * lamb / Msh.dx[iPos];
                 Msh.matA[iPos].ap = - Msh.matA[iPos].ae + bC[4];
                 Msh.bp[iPos] = bC[4] * bC[2] + (1 - beta) * (lamb * Msh.TNodes[iPos+1] / Msh.dx[iPos] - lamb * Msh.TNodes[iPos] / Msh.dx[iPos]);
+
             } else {
                 std::cerr << "Boundary side not specified correcly.\n";
             }
@@ -155,7 +163,7 @@ void Discretizer::setCoefficients(Material& Mat, Mesh& Msh){
         Msh.matA[i].ap = Mat.vMat[Msh.xMat[i]].rho * Mat.vMat[Msh.xMat[i]].cp * Msh.Vp[i] / dt - Msh.matA[i].aw - Msh.matA[i].ae;
         
         // Coefficients B
-        Msh.bp[i] = Mat.qV * Msh.Vp[i] + Mat.vMat[Msh.xMat[i]].rho * Mat.vMat[Msh.xMat[i]].cp * Msh.Vp[i] * Msh.TNodes[i] / dt + (1 - beta) * (lambw*Msh.Sw[i]*Msh.TNodes[i-1]/Msh.dx[i-1] + lambe*Msh.Se[i]*Msh.TNodes[i+1]/Msh.dx[i] - (lambw*Msh.Sw[i]/Msh.dx[i-1] + lambe*Msh.Se[i]/Msh.dx[i])*Msh.TNodes[i]);
+        Msh.bp[i] = Msh.qV[i] * Msh.Vp[i] + Mat.vMat[Msh.xMat[i]].rho * Mat.vMat[Msh.xMat[i]].cp * Msh.Vp[i] * Msh.TNodes[i] / dt + (1 - beta) * (lambw*Msh.Sw[i]*Msh.TNodes[i-1]/Msh.dx[i-1] + lambe*Msh.Se[i]*Msh.TNodes[i+1]/Msh.dx[i] - (lambw*Msh.Sw[i]/Msh.dx[i-1] + lambe*Msh.Se[i]/Msh.dx[i])*Msh.TNodes[i]);
 
     }
 
@@ -174,7 +182,7 @@ void Discretizer::setRHS(Material& Mat, Mesh& Msh){
         lambe = calcHarmonicMean(Msh.dx[i], {Mat.vMat[Msh.xMat[i]].lambda, Mat.vMat[Msh.xMat[i+1]].lambda}, {Msh.deltaX[i], Msh.deltaX[i+1]});
 
         // Coefficients B
-        Msh.bp[i] = Mat.qV * Msh.Vp[i] + Mat.vMat[Msh.xMat[i]].rho * Mat.vMat[Msh.xMat[i]].cp * Msh.Vp[i] * Msh.TNodes[i] / dt + (1 - beta) * (lambw*Msh.Sw[i]*Msh.TNodes[i-1]/Msh.dx[i-1] + lambe*Msh.Se[i]*Msh.TNodes[i+1]/Msh.dx[i] - (lambw*Msh.Sw[i]/Msh.dx[i-1] + lambe*Msh.Se[i]/Msh.dx[i])*Msh.TNodes[i]);
+        Msh.bp[i] = Msh.qV[i] * Msh.Vp[i] + Mat.vMat[Msh.xMat[i]].rho * Mat.vMat[Msh.xMat[i]].cp * Msh.Vp[i] * Msh.TNodes[i] / dt + (1 - beta) * (lambw*Msh.Sw[i]*Msh.TNodes[i-1]/Msh.dx[i-1] + lambe*Msh.Se[i]*Msh.TNodes[i+1]/Msh.dx[i] - (lambw*Msh.Sw[i]/Msh.dx[i-1] + lambe*Msh.Se[i]/Msh.dx[i])*Msh.TNodes[i]);
     
     }
 

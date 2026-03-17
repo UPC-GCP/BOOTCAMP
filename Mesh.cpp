@@ -88,14 +88,15 @@ void Mesh::generateMesh(Material& Mat, Json::Value sections) {
     for (Json::Value::ArrayIndex i = 0; i < sections.size(); i++) {
         totNodes += sections[i]["N"].asDouble();
     }
-    xFaces.resize(totNodes-1); xNodes.resize(totNodes); xMat.resize(totNodes);
+    xFaces.resize(totNodes-1); xNodes.resize(totNodes); xMat.resize(totNodes); qV.resize(totNodes);
 
     int cNode = 0;
     for (Json::Value::ArrayIndex i = 0; i < sections.size(); i++) {
 
-        // Material Vector
+        // Material Vectors
         for (int j = 0; j < sections[i]["N"].asInt(); j++){
             xMat[1+j+cNode] = sections[i]["material"].asInt();
+            qV[1+j+cNode] = sections[i]["qV"].asDouble();
         }
 
         // Face Nodes
