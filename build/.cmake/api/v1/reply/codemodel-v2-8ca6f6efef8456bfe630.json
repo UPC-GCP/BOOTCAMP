@@ -1,0 +1,87 @@
+{
+	"configurations" : 
+	[
+		{
+			"abstractTargets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "JsonCpp::JsonCpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-JsonCpp__JsonCpp-Debug-95ee95036ca979b2b297.json",
+					"name" : "JsonCpp::JsonCpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "jsoncpp_lib::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-jsoncpp_lib-Debug-4877b2b13f690695baf0.json",
+					"name" : "jsoncpp_lib",
+					"projectIndex" : 0
+				}
+			],
+			"directories" : 
+			[
+				{
+					"abstractTargetIndexes" : 
+					[
+						0,
+						1
+					],
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-f040eec181a89de70dbe.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"abstractTargetIndexes" : 
+					[
+						0,
+						1
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "P1Clean",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "MainSolver::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-MainSolver-Debug-42ea0b7e7eb6718bf7ca.json",
+					"name" : "MainSolver",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/gonce/CPPProjects/TFM/P1Clean/build",
+		"source" : "C:/Users/gonce/CPPProjects/TFM/P1Clean"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 10
+	}
+}

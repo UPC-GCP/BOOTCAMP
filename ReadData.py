@@ -45,6 +45,8 @@ def plotTimeStep(data:pd.DataFrame, t:float):
     # Clean Vector
     Time = data["Time"]; Time = [float(x) for x in Time[1:]]; Time = np.array(Time)
     
+    print(Time)
+
     # Find Position
     iPos = int(np.where(Time == t)[0])
 
@@ -105,58 +107,101 @@ def plotAnalytic(xVec:float, case:int):
         # Coefficients
         C2 = Tl; C1 = 0.5 * qV * V / lamb + Tr - Tl
         
-        # Vector
+        # Return
         yRet = [float(C2 + C1*x - 0.5 * qV * V * x * x / lamb) for x in xVec]
 
     elif case == 1: # Neumann - Dirichlet
         
         # Test Variables
-        Tr = 20
+        qNeu, TDir = 10000, 20
         qV, V = 300000, 1
         lamb = 400
-        qN = 10000
 
         # Coefficients
-        C1 = qN / lamb ; C2 = Tr + 0.5 * qV * V / lamb + qN
+        C1 = - qNeu/lamb
+        C2 = TDir + 0.5 * qV / lamb - C1
 
-        yRet = [float(C2 + C1*x - 0.5 * qV * V * x * x / lamb) for x in xVec]
+        # Return
+        yRet = [float(C2 + C1*x - 0.5 * qV * x * x / lamb) for x in xVec]
 
     elif case == 2: # Convection - Dirichlet
 
         # Test Variables
-        Tr = 20
+        Tg, alpha = 80, 2000; TDir = 20
         qV, V = 300000, 1
         lamb = 400
-        Tg, alpha = 80, 400
 
-        C2 = (Tr + 0.5 * qV * V / lamb + alpha * Tg) / (1 + alpha)
-        C1 = - alpha * (Tg - C2)
+        # Coefficients
+        C2 = (TDir + 0.5*qV/lamb + alpha*Tg/lamb) / (1 + alpha/lamb)
+        C1 = - alpha * (Tg - C2) / lamb
 
+        # Return
+        yRet = [float(C2 + C1*x - 0.5 * qV * V * x * x / lamb) for x in xVec]
+    
+    elif case == 3: # Dirichlet - Neumann
+        
+        # Test Variables
+        qNeu, TDir = 15000, 100
+        qV, V = 300000, 1
+        lamb = 400
+
+        # Coefficients
+        C2 = TDir
+        C1 = qV / lamb - qNeu / lamb
+
+        # Return
+        yRet = [float(C2 + C1*x - 0.5 * qV * V * x * x / lamb) for x in xVec]
+    
+    elif case == 4: # Dirichlet - Convection
+        
+        # Test Variables
+        Tg, alpha = 10, 4000; TDir = 100
+        qV, V = 300000, 1
+        lamb = 400
+
+        # Coefficients
+        C2 = TDir
+        C1 = (alpha*Tg/lamb + (1 + 0.5*alpha/lamb)*(qV/lamb) - alpha*C2/lamb) / (1 + alpha/lamb)
+
+        # Return
         yRet = [float(C2 + C1*x - 0.5 * qV * V * x * x / lamb) for x in xVec]
 
     return yRet
 
 ########## Import Data ##########
-filename = '20260316070646_data_CG_crank-nicolson.csv'
+# filename = '20260317143812_data_CG_crank-nicolson.csv' # Neumann-Dirichlet (30000 s)
+
+# filename = '20260318070853_data_CG_crank-nicolson.csv' # Convection-Dirichlet (10000 s)
+
+# filename = '20260318080731_data_CG_crank-nicolson.csv' # Dirichlet-Neumann (30000 s)
+# filename = '20260318080824_data_CG_crank-nicolson.csv' # Dirichlet-Neumann (30000 s)
+# filename = '20260318080926_data_CG_crank-nicolson.csv' # Dirichlet-Neumann (30000 s)
+
+# filename = '20260318081201_data_CG_crank-nicolson.csv' # Dirichlet-Convection (30000 s)
+
+filename = '20260319150833_data_CG_crank-nicolson.csv' # Sinusoidal Dirichlet
+
+
+pType, pPos, pTime = 4, 0, 10000
 data = pd.read_csv(filename)
 
 ########## Plots: Assignment ##########
-# # Plot A
-# xPos = 0.4
-# [xPlot, yPlot] = plotTempEvol(data, xPos)
-# fig = plt.figure(1); fig.set_figwidth(8); fig.set_figheight(4)
-# plt.plot(xPlot, yPlot, 'r')
-# plt.xscale('linear')
-# plt.grid(which='both', alpha=0.2); plt.title(f"Temperature evolution at position: {xPos:.3f} (m)" )
-# plt.xlabel('Time (s)'); plt.ylabel('Temperature (°C)')
+# Plot A
+xPos = pPos
+[xPlot, yPlot] = plotTempEvol(data, xPos)
+fig = plt.figure(1); fig.set_figwidth(8); fig.set_figheight(4)
+plt.plot(xPlot, yPlot, 'r')
+plt.xscale('linear')
+plt.grid(which='both', alpha=0.2); plt.title(f"Temperature evolution at position: {xPos:.3f} (m)" )
+plt.xlabel('Time (s)'); plt.ylabel('Temperature (°C)')
 
 # Plot B
-tVal = 5000
+tVal = pTime
 [xPlot, yPlot] = plotTimeStep(data, tVal)
-yAnal = plotAnalytic(xPlot, 1)
+# yAnal = plotAnalytic(xPlot, pType)
 fig = plt.figure(2); fig.set_figwidth(8); fig.set_figheight(4)
 plt.plot(xPlot, yPlot, 'r', label='Model Solution')
-plt.plot(xPlot, yAnal, 'b', label='Analytical Solution')
+# plt.plot(xPlot, yAnal, 'b', label='Analytical Solution')
 plt.grid(which='both', alpha=0.2); plt.title(f"Temperature profile at time: {tVal:.0f} (s)")
 plt.xlabel('Position (m)'); plt.ylabel('Temperature (°C)')
 plt.legend()

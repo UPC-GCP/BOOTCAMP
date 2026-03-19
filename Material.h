@@ -6,6 +6,7 @@
 
 struct MatPhys{
     double rho, lambda, cp, alpha;
+    std::string rhoExpr, lambdaExpr, cpExpr;
 };
 
 class Material

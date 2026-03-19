@@ -128,7 +128,7 @@ int main(int argc, char* argv[]){
     for (double t = Dsc.dt; t <= Dsc.endTime; t += Dsc.dt){
 
         // Update Coefficients
-        Dsc.setBoundaryConditions(Mat, Msh);
+        Dsc.setBoundaryConditions(Mat, Msh, t);
         Dsc.setRHS(Mat, Msh);
 
         // Solver

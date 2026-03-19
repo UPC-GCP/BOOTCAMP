@@ -1,0 +1,50 @@
+[
+{
+  "directory": "C:/Users/gonce/CPPProjects/TFM/P1Clean/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe -DJSON_DLL @CMakeFiles/MainSolver.dir/includes_CXX.rsp -g -std=gnu++17 -Wa,-mbig-obj -o CMakeFiles\\MainSolver.dir\\MainSolver.cpp.obj -c C:\\Users\\gonce\\CPPProjects\\TFM\\P1Clean\\MainSolver.cpp",
+  "file": "C:/Users/gonce/CPPProjects/TFM/P1Clean/MainSolver.cpp",
+  "output": "CMakeFiles/MainSolver.dir/MainSolver.cpp.obj"
+},
+{
+  "directory": "C:/Users/gonce/CPPProjects/TFM/P1Clean/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe -DJSON_DLL @CMakeFiles/MainSolver.dir/includes_CXX.rsp -g -std=gnu++17 -Wa,-mbig-obj -o CMakeFiles\\MainSolver.dir\\Material.cpp.obj -c C:\\Users\\gonce\\CPPProjects\\TFM\\P1Clean\\Material.cpp",
+  "file": "C:/Users/gonce/CPPProjects/TFM/P1Clean/Material.cpp",
+  "output": "CMakeFiles/MainSolver.dir/Material.cpp.obj"
+},
+{
+  "directory": "C:/Users/gonce/CPPProjects/TFM/P1Clean/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe -DJSON_DLL @CMakeFiles/MainSolver.dir/includes_CXX.rsp -g -std=gnu++17 -Wa,-mbig-obj -o CMakeFiles\\MainSolver.dir\\Mesh.cpp.obj -c C:\\Users\\gonce\\CPPProjects\\TFM\\P1Clean\\Mesh.cpp",
+  "file": "C:/Users/gonce/CPPProjects/TFM/P1Clean/Mesh.cpp",
+  "output": "CMakeFiles/MainSolver.dir/Mesh.cpp.obj"
+},
+{
+  "directory": "C:/Users/gonce/CPPProjects/TFM/P1Clean/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe -DJSON_DLL @CMakeFiles/MainSolver.dir/includes_CXX.rsp -g -std=gnu++17 -Wa,-mbig-obj -o CMakeFiles\\MainSolver.dir\\Discretizer.cpp.obj -c C:\\Users\\gonce\\CPPProjects\\TFM\\P1Clean\\Discretizer.cpp",
+  "file": "C:/Users/gonce/CPPProjects/TFM/P1Clean/Discretizer.cpp",
+  "output": "CMakeFiles/MainSolver.dir/Discretizer.cpp.obj"
+},
+{
+  "directory": "C:/Users/gonce/CPPProjects/TFM/P1Clean/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe -DJSON_DLL @CMakeFiles/MainSolver.dir/includes_CXX.rsp -g -std=gnu++17 -Wa,-mbig-obj -o CMakeFiles\\MainSolver.dir\\Solver.cpp.obj -c C:\\Users\\gonce\\CPPProjects\\TFM\\P1Clean\\Solver.cpp",
+  "file": "C:/Users/gonce/CPPProjects/TFM/P1Clean/Solver.cpp",
+  "output": "CMakeFiles/MainSolver.dir/Solver.cpp.obj"
+},
+{
+  "directory": "C:/Users/gonce/CPPProjects/TFM/P1Clean/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe -DJSON_DLL @CMakeFiles/MainSolver.dir/includes_CXX.rsp -g -std=gnu++17 -Wa,-mbig-obj -o CMakeFiles\\MainSolver.dir\\GS.cpp.obj -c C:\\Users\\gonce\\CPPProjects\\TFM\\P1Clean\\GS.cpp",
+  "file": "C:/Users/gonce/CPPProjects/TFM/P1Clean/GS.cpp",
+  "output": "CMakeFiles/MainSolver.dir/GS.cpp.obj"
+},
+{
+  "directory": "C:/Users/gonce/CPPProjects/TFM/P1Clean/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe -DJSON_DLL @CMakeFiles/MainSolver.dir/includes_CXX.rsp -g -std=gnu++17 -Wa,-mbig-obj -o CMakeFiles\\MainSolver.dir\\CG.cpp.obj -c C:\\Users\\gonce\\CPPProjects\\TFM\\P1Clean\\CG.cpp",
+  "file": "C:/Users/gonce/CPPProjects/TFM/P1Clean/CG.cpp",
+  "output": "CMakeFiles/MainSolver.dir/CG.cpp.obj"
+},
+{
+  "directory": "C:/Users/gonce/CPPProjects/TFM/P1Clean/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe -DJSON_DLL @CMakeFiles/MainSolver.dir/includes_CXX.rsp -g -std=gnu++17 -Wa,-mbig-obj -o CMakeFiles\\MainSolver.dir\\formulaParser.cpp.obj -c C:\\Users\\gonce\\CPPProjects\\TFM\\P1Clean\\formulaParser.cpp",
+  "file": "C:/Users/gonce/CPPProjects/TFM/P1Clean/formulaParser.cpp",
+  "output": "CMakeFiles/MainSolver.dir/formulaParser.cpp.obj"
+}
+]

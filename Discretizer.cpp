@@ -9,6 +9,7 @@
 #include "Material.h"
 #include "Mesh.h"
 #include "Discretizer.h"
+#include "libFormulaParser.h"
 
 Discretizer::Discretizer(std::string scheme, double endTime, double dt) {
     
@@ -18,6 +19,14 @@ Discretizer::Discretizer(std::string scheme, double endTime, double dt) {
 
 }
 
+// double getExprValue(){
+
+//     // This function will receive an expression for the corresponding equation and the control variable and must return the result 
+
+
+
+// }
+
 double Discretizer::calcHarmonicMean(double dPF, std::vector<double> lambda, std::vector<double> deltaX) {
 
     // Denominator
@@ -26,10 +35,7 @@ double Discretizer::calcHarmonicMean(double dPF, std::vector<double> lambda, std
         A += (deltaX[i] / 2) / lambda[i];
     }
     
-    // Corrected Lambda    
-    double lambNew = dPF / A;
-
-    return lambNew;
+    return dPF / A;
 
 }
 
@@ -67,19 +73,27 @@ void Discretizer::setSchemeParameters(Material& Mat, Mesh& Msh){
 
 }
 
-void Discretizer::setBoundaryConditions(Material& Mat, Mesh& Msh){
+void Discretizer::setBoundaryConditions(Material& Mat, Mesh& Msh, double t){
     
     // Boundary Conditions
     int iPos;
     for (std::vector<double> bC : Msh.boundaryConditions) {
 
+        // type, position, update, value
+
         // Control
         iPos = std::find(Msh.xNodes.begin(), Msh.xNodes.end(), bC[1]) - Msh.xNodes.begin(); double lamb;
 
+        // Check Type
         if (bC[0] == 0){
             
+            // Update Value
+            if (bC[2] == 1){
+                bC[3] = calcFormulaExpression(Msh.boundaryExpr[std::find(Msh.boundaryConditions.begin(), Msh.boundaryConditions.end(), bC) - Msh.boundaryConditions.begin()], t);
+            }
+
             // Dirichlet Coefficients
-            Msh.TNodes[iPos] = bC[2];
+            Msh.TNodes[iPos] = bC[3];
             // Msh.ap[iPos] = 1; Msh.bp[iPos] = bC[2];
 
             // Control

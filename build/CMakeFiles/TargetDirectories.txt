@@ -1,0 +1,3 @@
+C:/Users/gonce/CPPProjects/TFM/P1Clean/build/CMakeFiles/MainSolver.dir
+C:/Users/gonce/CPPProjects/TFM/P1Clean/build/CMakeFiles/edit_cache.dir
+C:/Users/gonce/CPPProjects/TFM/P1Clean/build/CMakeFiles/rebuild_cache.dir

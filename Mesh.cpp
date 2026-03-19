@@ -20,14 +20,63 @@ Mesh::Mesh(int algo, double W, double H, double A, double xC, double kStr, doubl
     
 }
 
+bool Mesh::isFormula(std::string value){
+
+    // Stringstream
+    std::stringstream ss; ss << value;
+
+    // Check
+    float num = 0; ss >> num;
+
+    // Return
+    if (ss.good()){
+        return true;
+    } else if (num == 0 && value[0] != 0){
+        return true;
+    } else {
+        return false;
+    }
+
+}
+
 void Mesh::addBoundaryConditions(Json::Value boundaries){
+
+    // Este módulo guarda los parámetros relevantes para cada BC para que después lo pueda usar el Discretizer.cpp y actualizar los boundary nodes.
+    // Discretizer tiene que saber si puede solo usar el valor o si necesita actualizar el número. Puedo dejar el formato vector<double> por ahora y guardar un dato más ahí que me permita saber si hay que calcularlo.
+    // OKOK ENTONCES ES ASÍ
+
+    // 1. Resize boundaryExpr
+    // 2. Read each BC and separate by type
+        // Already done until here
+    // 3. Mesh:
+        // Current: boundaryConditions[i] = [type, position, value]
+        // New: boundaryConditions[i] = [type, position, update, value]
+        // IF isStr(boundaryConditions[i]["value"]) THEN update = 1 and save in boundaryExpr[i] ELSE update = 0
+    // 4. Discretizer:
+        // IF update = 1 THEN use boundaryConditions[i]["value"] = boundaryExpr[i](t)
+        // 
+
+    // Control
+    boundaryExpr.resize(boundaries.size());
 
     // Boundary Conditions
     for (Json::Value::ArrayIndex i = 0; i < boundaries.size(); i++) {
 
         if (boundaries[i]["type"] == "Dirichlet") {
 
-            boundaryConditions.push_back({0, std::stod(boundaries[i]["position"].asString(), 0), std::stod(boundaries[i]["value"].asString(), 0)});
+            if (isFormula(boundaries[i]["value"].asString())){
+
+                // Save Data
+                boundaryConditions.push_back({0, std::stod(boundaries[i]["position"].asString(), 0), 1, 0});
+                boundaryExpr[i] = boundaries[i]["value"].asString();
+
+            } else {
+
+                // Save Data
+                boundaryConditions.push_back({0, std::stod(boundaries[i]["position"].asString(), 0), 0, std::stod(boundaries[i]["value"].asString(), 0)});
+
+            }
+            
 
         } else if (boundaries[i]["type"] == "Neumann") {
             
